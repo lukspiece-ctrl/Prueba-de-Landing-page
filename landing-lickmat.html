@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LickMat Pro — Calma y entretené a tu perro</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=Inter:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --verde: #1DB954;
+    --verde-claro: #e8f8ee;
+    --verde-borde: #a3dbb5;
+    --naranja: #FF6B35;
+    --naranja-claro: #fff3ee;
+    --amarillo: #FFD166;
+    --texto: #1a1a1a;
+    --texto-suave: #555;
+    --fondo: #ffffff;
+    --fondo2: #f8f9fa;
+    --borde: #e5e7eb;
+    --rojo: #e74c3c;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* BARRA SUPERIOR */
+  .topbar {
+    background: #1a1a1a;
+    color: #fff;
+    text-align: center;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+  .topbar span { color: var(--amarillo); font-weight: 700; }
+
+  /* HEADER */
+  .header {
+    border-bottom: 1px solid var(--borde);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .logo {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--texto);
+  }
+  .logo span { color: var(--verde); }
+  .header-trust {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--texto-suave);
+  }
+  .lock-icon { color: var(--verde); font-size: 16px; }
+
+  /* HERO */
+  .hero {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  /* GALERÍA */
+  .galeria { position: sticky; top: 20px; }
+  .foto-principal {
+    width: 100%;
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 110px;
+    margin-bottom: 12px;
+    border: 1px solid var(--borde);
+    position: relative;
+    overflow: hidden;
+  }
+  .foto-principal::after {
+    content: 'EJEMPLO DE FOTO DEL PRODUCTO';
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: #999;
+    white-space: nowrap;
+  }
+  .miniaturas {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .mini {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    background: #f0f0f0;
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .mini:hover, .mini.activa { border-color: var(--verde); }
+  .badge-video {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+
+  /* INFO PRODUCTO */
+  .info { }
+  .cat-tag {
+    display: inline-block;
+    background: var(--verde-claro);
+    color: #0d7a38;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  .titulo {
+    font-family: 'Sora', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    color: var(--texto);
+  }
+  .subtitulo {
+    font-size: 15px;
+    color: var(--texto-suave);
+    margin-bottom: 16px;
+  }
+
+  /* ESTRELLAS */
+  .rating-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--borde);
+  }
+  .estrellas { color: #f59e0b; font-size: 16px; letter-spacing: 1px; }
+  .rating-num { font-weight: 700; font-size: 15px; }
+  .rating-count { font-size: 13px; color: var(--texto-suave); }
+  .vendidos {
+    margin-left: auto;
+    background: #fff3e0;
+    color: #e65100;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+
+  /* PRECIO */
+  .precio-bloque { margin-bottom: 20px; }
+  .precio-actual {
+    font-family: 'Sora', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--texto);
+  }
+  .precio-tachado {
+    font-size: 18px;
+    color: #bbb;
+    text-decoration: line-through;
+    margin-left: 10px;
+  }
+  .ahorro-badge {
+    display: inline-block;
+    background: #fee2e2;
+    color: var(--rojo);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-left: 8px;
+  }
+  .precio-envio {
+    font-size: 13px;
+    color: var(--verde);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  /* VARIANTES */
+  .variantes-label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .variantes {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .variante {
+    padding: 8px 18px;
+    border: 2px solid var(--borde);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: #fff;
+  }
+  .variante.sel { border-color: var(--verde); background: var(--verde-claro); color: #0d7a38; }
+  .variante:hover { border-color: var(--verde); }
+
+  /* CANTIDAD */
+  .cant-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .cant-label { font-size: 13px; font-weight: 600; color: var(--texto-suave); text-transform: uppercase; letter-spacing: 0.5px; }
+  .cant-control {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid var(--borde);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .cant-btn {
+    width: 38px; height: 38px;
+    background: var(--fondo2);
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--texto);
+    transition: background 0.15s;
+  }
+  .cant-btn:hover { background: #e5e7eb; }
+  .cant-num {
+    width: 44px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    background: #fff;
+  }
+
+  /* BOTONES */
+  .btn-comprar {
+    width: 100%;
+    padding: 17px;
+    background: var(--verde);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Sora', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 12px;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.3px;
+  }
+  .btn-comprar:hover { background: #17a046; }
+  .btn-comprar:active { transform: scale(0.99); }
+  .btn-cart {
+    width: 100%;
+    padding: 15px;
+    background: #fff;
+    color: var(--texto);
+    border: 2px solid var(--texto);
+    border-radius: 12px;
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background 0.15s;
+  }
+  .btn-cart:hover { background: var(--fondo2); }
+
+  /* URGENCIA */
+  .urgencia {
+    background: #fff8e1;
+    border: 1.5px solid #ffe082;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #7c5800;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .urgencia-dot { width: 8px; height: 8px; background: var(--naranja); border-radius: 50%; flex-shrink: 0; animation: pulso 1.2s infinite; }
+  @keyframes pulso { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+  /* GARANTÍAS */
+  .garantias {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .garantia {
+    text-align: center;
+    padding: 12px 8px;
+    background: var(--fondo2);
+    border-radius: 10px;
+    border: 1px solid var(--borde);
+  }
+  .garantia-icon { font-size: 22px; margin-bottom: 4px; }
+  .garantia p { font-size: 11px; color: var(--texto-suave); font-weight: 600; line-height: 1.3; }
+
+  /* PROBLEMA */
+  .seccion { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
+  .seccion-titulo {
+    font-family: 'Sora', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .problema-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .problema-card {
+    background: #fff5f5;
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .problema-card .p-icon { font-size: 32px; margin-bottom: 8px; }
+  .problema-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: #991b1b; }
+  .problema-card p { font-size: 12px; color: #b91c1c; }
+
+  /* BENEFICIOS */
+  .beneficios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .beneficio-card {
+    background: var(--verde-claro);
+    border: 1px solid var(--verde-borde);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .beneficio-card .b-icon { font-size: 28px; margin-bottom: 8px; }
+  .beneficio-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; color: #0d5c2e; }
+  .beneficio-card p { font-size: 13px; color: #166534; }
+
+  /* COMO FUNCIONA */
+  .pasos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    position: relative;
+  }
+  .paso-como {
+    text-align: center;
+    padding: 24px 16px;
+    background: var(--fondo2);
+    border-radius: 14px;
+    border: 1px solid var(--borde);
+  }
+  .paso-n {
+    width: 36px; height: 36px;
+    background: var(--verde);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    margin: 0 auto 12px;
+  }
+  .paso-como .paso-icon { font-size: 32px; margin-bottom: 10px; }
+  .paso-como h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .paso-como p { font-size: 12px; color: var(--texto-suave); }
+
+  /* REVIEWS */
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .review-card {
+    background: var(--fondo2);
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .review-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .av-verde { background: var(--verde-claro); color: #0d7a38; }
+  .av-azul { background: #dbeafe; color: #1e40af; }
+  .av-naranja { background: var(--naranja-claro); color: #c2410c; }
+  .review-nombre { font-weight: 700; font-size: 14px; }
+  .review-pais { font-size: 12px; color: var(--texto-suave); }
+  .review-estrellas { color: #f59e0b; font-size: 13px; margin-bottom: 8px; }
+  .review-texto { font-size: 14px; color: var(--texto-suave); line-height: 1.5; }
+  .review-verificado {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--verde);
+    font-weight: 600;
+  }
+  .rating-resumen {
+    background: var(--verde-claro);
+    border: 1px solid var(--verde-borde);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  .rating-grande {
+    font-family: 'Sora', sans-serif;
+    font-size: 52px;
+    font-weight: 800;
+    color: var(--texto);
+    line-height: 1;
+  }
+  .rating-detalle { flex: 1; }
+  .barra-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .barra-label { font-size: 12px; color: var(--texto-suave); width: 16px; text-align: right; }
+  .barra-track {
+    flex: 1;
+    height: 6px;
+    background: #d1fae5;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .barra-fill { height: 100%; background: var(--verde); border-radius: 999px; }
+
+  /* FAQ */
+  .faq-lista { display: flex; flex-direction: column; gap: 12px; }
+  .faq-item {
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .faq-preg {
+    padding: 16px 20px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--fondo2);
+  }
+  .faq-preg:hover { background: #f0f0f0; }
+  .faq-resp {
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s, padding 0.3s;
+    font-size: 14px;
+    color: var(--texto-suave);
+    line-height: 1.6;
+  }
+  .faq-resp.abierta { max-height: 200px; padding: 14px 20px; }
+  .faq-flecha { transition: transform 0.3s; color: var(--verde); font-size: 20px; font-weight: 700; }
+  .faq-flecha.abierta { transform: rotate(45deg); }
+
+  /* CTA FINAL */
+  .cta-final {
+    background: linear-gradient(135deg, #0d5c2e, #1a8a48);
+    color: #fff;
+    padding: 60px 24px;
+    text-align: center;
+  }
+  .cta-final h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .cta-final p { font-size: 16px; opacity: 0.85; margin-bottom: 28px; max-width: 500px; margin-left: auto; margin-right: auto; margin-bottom: 28px; }
+  .btn-cta-final {
+    display: inline-block;
+    background: #fff;
+    color: #0d5c2e;
+    font-family: 'Sora', sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    padding: 16px 40px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .btn-cta-final:hover { transform: scale(1.02); }
+
+  /* FOOTER */
+  .footer {
+    background: #1a1a1a;
+    color: #999;
+    text-align: center;
+    padding: 28px 24px;
+    font-size: 12px;
+  }
+  .footer a { color: #ccc; text-decoration: none; margin: 0 8px; }
+  .footer .pagos { margin-top: 12px; font-size: 22px; letter-spacing: 4px; }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--borde); }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .hero { grid-template-columns: 1fr; gap: 24px; padding: 20px 16px; }
+    .galeria { position: static; }
+    .titulo { font-size: 22px; }
+    .garantias { grid-template-columns: repeat(3, 1fr); }
+    .header { padding: 12px 16px; }
+    .rating-resumen { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- BARRA SUPERIOR -->
+<div class="topbar">
+  🚚 Envío gratis en pedidos mayores a USD 30 · <span>Solo quedan 47 unidades</span>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header">
+    <div class="logo">Pata<span>Feliz</span></div>
+    <div class="header-trust">
+      <span class="lock-icon">🔒</span> Compra 100% segura
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- GALERÍA -->
+  <div class="galeria">
+    <div class="foto-principal">
+      🐾
+      <div class="badge-video">▶ Ver en acción</div>
+    </div>
+    <div class="miniaturas">
+      <div class="mini activa">🐾</div>
+      <div class="mini">🐕</div>
+      <div class="mini">🧼</div>
+      <div class="mini">📦</div>
+    </div>
+  </div>
+
+  <!-- INFO -->
+  <div class="info">
+    <div class="cat-tag">⭐ Producto Destacado</div>
+    <h1 class="titulo">LickMat Pro de Silicona con Ventosas</h1>
+    <p class="subtitulo">Calma la ansiedad de tu perro y lo entretiene por horas. Con textura antideslizante y ventosas extra fuertes.</p>
+
+    <div class="rating-row">
+      <span class="estrellas">★★★★★</span>
+      <span class="rating-num">4.8</span>
+      <span class="rating-count">(2.341 reseñas)</span>
+      <span class="vendidos">🔥 +1.200 vendidos</span>
+    </div>
+
+    <div class="precio-bloque">
+      <span class="precio-actual">USD 19.99</span>
+      <span class="precio-tachado">USD 34.99</span>
+      <span class="ahorro-badge">−43%</span>
+      <div class="precio-envio">✅ Envío gratis a todo el mundo</div>
+    </div>
+
+    <!-- VARIANTES -->
+    <div class="variantes-label">Color</div>
+    <div class="variantes">
+      <div class="variante sel">🟢 Verde</div>
+      <div class="variante">🔵 Azul</div>
+      <div class="variante">🟡 Amarillo</div>
+      <div class="variante">🩷 Rosa</div>
+    </div>
+
+    <!-- CANTIDAD -->
+    <div class="cant-row">
+      <span class="cant-label">Cantidad</span>
+      <div class="cant-control">
+        <button class="cant-btn" onclick="cambiarCant(-1)">−</button>
+        <span class="cant-num" id="cant">1</span>
+        <button class="cant-btn" onclick="cambiarCant(1)">+</button>
+      </div>
+      <span style="font-size:13px;color:var(--texto-suave);">Llevá 2 y ahorrá 10%</span>
+    </div>
+
+    <!-- URGENCIA -->
+    <div class="urgencia">
+      <div class="urgencia-dot"></div>
+      ¡Solo quedan <strong style="color:#b45309; margin: 0 4px;">8 unidades</strong> en stock al precio actual!
+    </div>
+
+    <!-- BOTONES -->
+    <button class="btn-comprar">🛒 Comprar ahora — USD 19.99</button>
+    <button class="btn-cart">+ Agregar al carrito</button>
+
+    <!-- GARANTÍAS -->
+    <div class="garantias">
+      <div class="garantia">
+        <div class="garantia-icon">🔒</div>
+        <p>Pago seguro y encriptado</p>
+      </div>
+      <div class="garantia">
+        <div class="garantia-icon">↩️</div>
+        <p>30 días devolución gratis</p>
+      </div>
+      <div class="garantia">
+        <div class="garantia-icon">✈️</div>
+        <p>Envío a todo el mundo</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PROBLEMA -->
+<section class="seccion">
+  <h2 class="seccion-titulo">¿Tu perro sufre de estos problemas?</h2>
+  <div class="problema-grid">
+    <div class="problema-card">
+      <div class="p-icon">😰</div>
+      <h4>Ansiedad y nerviosismo</h4>
+      <p>Se pone ansioso cuando lo dejás solo o en situaciones de estrés</p>
+    </div>
+    <div class="problema-card">
+      <div class="p-icon">🛋️</div>
+      <h4>Destruye muebles y objetos</h4>
+      <p>Muerde lo que encuentra cuando se aburre o está solo en casa</p>
+    </div>
+    <div class="problema-card">
+      <div class="p-icon">🍖</div>
+      <h4>Come muy rápido</h4>
+      <p>Traga la comida sin masticar, lo que puede causar problemas digestivos</p>
+    </div>
+    <div class="problema-card">
+      <div class="p-icon">📢</div>
+      <h4>Ladra constantemente</h4>
+      <p>Molesta a los vecinos o te interrumpe cuando estás trabajando</p>
+    </div>
+  </div>
+
+  <h2 class="seccion-titulo" style="margin-top:8px;">El LickMat Pro resuelve todo eso 🎉</h2>
+  <div class="beneficios-grid">
+    <div class="beneficio-card">
+      <div class="b-icon">🧠</div>
+      <h4>Estimulación mental</h4>
+      <p>Las texturas complejas mantienen ocupado el cerebro de tu perro hasta 30 minutos seguidos.</p>
+    </div>
+    <div class="beneficio-card">
+      <div class="b-icon">😌</div>
+      <h4>Calma natural</h4>
+      <p>El acto de lamer libera endorfinas. Tu perro se relaja solo, sin medicamentos.</p>
+    </div>
+    <div class="beneficio-card">
+      <div class="b-icon">🦷</div>
+      <h4>Mejor digestión</h4>
+      <p>Comer despacio reduce el aire ingerido y mejora la absorción de nutrientes.</p>
+    </div>
+    <div class="beneficio-card">
+      <div class="b-icon">🧽</div>
+      <h4>Fácil de limpiar</h4>
+      <p>100% silicona alimentaria. Va directo al lavavajillas o bajo el chorro de agua.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CÓMO FUNCIONA -->
+<section class="seccion">
+  <h2 class="seccion-titulo">¿Cómo se usa? Es muy simple</h2>
+  <div class="pasos-grid">
+    <div class="paso-como">
+      <div class="paso-n">1</div>
+      <div class="paso-icon">🥜</div>
+      <h4>Untá algo rico</h4>
+      <p>Mantequilla de maní, yogur, puré de frutas o su comida húmeda favorita.</p>
+    </div>
+    <div class="paso-como">
+      <div class="paso-n">2</div>
+      <div class="paso-icon">❄️</div>
+      <h4>Congelá (opcional)</h4>
+      <p>Para que dure más tiempo y también sea refrescante en días de calor.</p>
+    </div>
+    <div class="paso-como">
+      <div class="paso-n">3</div>
+      <div class="paso-icon">🐕</div>
+      <h4>Pegalo y listo</h4>
+      <p>Las ventosas lo fijan fuerte a cualquier superficie. Tu perro hace el resto.</p>
+    </div>
+    <div class="paso-como">
+      <div class="paso-n">4</div>
+      <div class="paso-icon">😴</div>
+      <h4>Perro feliz y calmado</h4>
+      <p>Hasta 30 minutos de entretenimiento. Luego estará tranquilo para dormir la siesta.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- REVIEWS -->
+<section class="seccion">
+  <h2 class="seccion-titulo">Lo que dicen quienes ya lo compraron</h2>
+
+  <div class="rating-resumen">
+    <div class="rating-grande">4.8</div>
+    <div class="rating-detalle">
+      <div class="barra-row">
+        <span class="barra-label">5</span>
+        <div class="barra-track"><div class="barra-fill" style="width:82%"></div></div>
+        <span style="font-size:12px;color:var(--texto-suave);">82%</span>
+      </div>
+      <div class="barra-row">
+        <span class="barra-label">4</span>
+        <div class="barra-track"><div class="barra-fill" style="width:12%"></div></div>
+        <span style="font-size:12px;color:var(--texto-suave);">12%</span>
+      </div>
+      <div class="barra-row">
+        <span class="barra-label">3</span>
+        <div class="barra-track"><div class="barra-fill" style="width:4%"></div></div>
+        <span style="font-size:12px;color:var(--texto-suave);">4%</span>
+      </div>
+      <div class="barra-row">
+        <span class="barra-label">2</span>
+        <div class="barra-track"><div class="barra-fill" style="width:1%"></div></div>
+        <span style="font-size:12px;color:var(--texto-suave);">1%</span>
+      </div>
+      <div class="barra-row">
+        <span class="barra-label">1</span>
+        <div class="barra-track"><div class="barra-fill" style="width:1%"></div></div>
+        <span style="font-size:12px;color:var(--texto-suave);">1%</span>
+      </div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:36px;">⭐</div>
+      <div style="font-size:14px;font-weight:700;color:#0d5c2e;">2.341 reseñas</div>
+      <div style="font-size:12px;color:#166534;">verificadas</div>
+    </div>
+  </div>
+
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-header">
+        <div class="avatar av-verde">ML</div>
+        <div>
+          <div class="review-nombre">María L.</div>
+          <div class="review-pais">🇺🇸 Estados Unidos</div>
+        </div>
+      </div>
+      <div class="review-estrellas">★★★★★</div>
+      <p class="review-texto">"Mi golden retriever tiene ansiedad de separación y esto fue un antes y un después. Lo dejo con mantequilla de maní congelada y queda tranquilo una hora entera."</p>
+      <span class="review-verificado">✅ Compra verificada</span>
+    </div>
+    <div class="review-card">
+      <div class="review-header">
+        <div class="avatar av-azul">CR</div>
+        <div>
+          <div class="review-nombre">Carlos R.</div>
+          <div class="review-pais">🇲🇽 México</div>
+        </div>
+      </div>
+      <div class="review-estrellas">★★★★★</div>
+      <p class="review-texto">"Le compré para que coma más despacio y funciona perfecto. Las ventosas se quedan bien pegadas en el piso de cerámica. Muy buena calidad del material."</p>
+      <span class="review-verificado">✅ Compra verificada</span>
+    </div>
+    <div class="review-card">
+      <div class="review-header">
+        <div class="avatar av-naranja">SP</div>
+        <div>
+          <div class="review-nombre">Sofía P.</div>
+          <div class="review-pais">🇦🇷 Argentina</div>
+        </div>
+      </div>
+      <div class="review-estrellas">★★★★☆</div>
+      <p class="review-texto">"Excelente producto. Le puse yogur griego y mi perrita no lo soltaba. Lo limpié en el lavavajillas y quedó como nuevo. Llegó bien embalado."</p>
+      <span class="review-verificado">✅ Compra verificada</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- FAQ -->
+<section class="seccion">
+  <h2 class="seccion-titulo">Preguntas frecuentes</h2>
+  <div class="faq-lista">
+    <div class="faq-item">
+      <div class="faq-preg" onclick="toggleFaq(this)">
+        ¿Es seguro para mi perro? <span class="faq-flecha">+</span>
+      </div>
+      <div class="faq-resp">Sí. El LickMat Pro está hecho de silicona alimentaria 100% libre de BPA, igual que los chupetes de bebé. Es completamente seguro para que tu perro lo lama.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-preg" onclick="toggleFaq(this)">
+        ¿Para qué tamaño de perro es? <span class="faq-flecha">+</span>
+      </div>
+      <div class="faq-resp">Funciona para perros de todos los tamaños. Para perros pequeños usá la cara de texturas finas. Para perros grandes podés poner más cantidad de alimento en las texturas más profundas.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-preg" onclick="toggleFaq(this)">
+        ¿Cuánto tarda en llegar? <span class="faq-flecha">+</span>
+      </div>
+      <div class="faq-resp">El tiempo de entrega es de 7 a 20 días hábiles dependiendo de tu país. Recibirás un número de seguimiento por email para rastrear tu paquete en todo momento.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-preg" onclick="toggleFaq(this)">
+        ¿Qué pasa si no me gusta o viene roto? <span class="faq-flecha">+</span>
+      </div>
+      <div class="faq-resp">Ofrecemos garantía total de 30 días. Si el producto llega defectuoso o no estás satisfecho por cualquier razón, te reembolsamos el 100% del dinero sin preguntas.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-preg" onclick="toggleFaq(this)">
+        ¿Cómo lo limpio? <span class="faq-flecha">+</span>
+      </div>
+      <div class="faq-resp">Es muy fácil. Podés lavarlo a mano con agua y jabón, o meterlo directamente al lavavajillas. La silicona no retiene olores ni manchas.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<div class="cta-final">
+  <h2>¿Tu perro se lo merece, no? 🐾</h2>
+  <p>Más de 1.200 dueños ya mejoraron la calidad de vida de sus mascotas con el LickMat Pro. Garantía de 30 días incluida.</p>
+  <button class="btn-cta-final">🛒 Quiero el mío — USD 19.99</button>
+  <p style="margin-top:16px;font-size:13px;opacity:0.7;">🔒 Pago seguro · ✈️ Envío gratis · ↩️ 30 días de garantía</p>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>© 2025 PataFeliz Store · Todos los derechos reservados</p>
+  <p style="margin-top:6px;"><a href="#">Política de privacidad</a> · <a href="#">Términos y condiciones</a> · <a href="#">Contacto</a> · <a href="#">Seguí tu pedido</a></p>
+  <div class="pagos">💳 🔒 📦</div>
+  <p style="margin-top:10px;font-size:11px;color:#666;">Este sitio está protegido por SSL. Tus datos están 100% seguros.</p>
+</div>
+
+<script>
+function cambiarCant(d) {
+  var el = document.getElementById('cant');
+  var v = parseInt(el.textContent) + d;
+  if (v < 1) v = 1;
+  if (v > 10) v = 10;
+  el.textContent = v;
+  var precio = (19.99 * v).toFixed(2);
+  document.querySelector('.btn-comprar').textContent = '🛒 Comprar ahora — USD ' + precio;
+}
+
+function toggleFaq(el) {
+  var resp = el.nextElementSibling;
+  var flecha = el.querySelector('.faq-flecha');
+  var abierta = resp.classList.contains('abierta');
+  document.querySelectorAll('.faq-resp').forEach(function(r){ r.classList.remove('abierta'); });
+  document.querySelectorAll('.faq-flecha').forEach(function(f){ f.classList.remove('abierta'); });
+  if (!abierta) {
+    resp.classList.add('abierta');
+    flecha.classList.add('abierta');
+  }
+}
+
+document.querySelectorAll('.variante').forEach(function(v){
+  v.addEventListener('click', function(){
+    document.querySelectorAll('.variante').forEach(function(x){ x.classList.remove('sel'); });
+    v.classList.add('sel');
+  });
+});
+
+document.querySelectorAll('.mini').forEach(function(m){
+  m.addEventListener('click', function(){
+    document.querySelectorAll('.mini').forEach(function(x){ x.classList.remove('activa'); });
+    m.classList.add('activa');
+  });
+});
+</script>
+
+</body>
+</html>
